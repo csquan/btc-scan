@@ -39,7 +39,7 @@ import (
 	"crypto/elliptic"
 	"crypto/sha256"
 	"crypto/sha512"
-	"github.com/ethereum/HuiCollect/pkg/util"
+	"github.com/btc-scan/pkg/util"
 	"hash"
 )
 

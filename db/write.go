@@ -3,8 +3,8 @@ package db
 import (
 	"time"
 
-	"github.com/ethereum/HuiCollect/config"
-	"github.com/ethereum/HuiCollect/types"
+	"github.com/btc-scan/config"
+	"github.com/btc-scan/types"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
 	"github.com/sirupsen/logrus"

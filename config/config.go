@@ -14,7 +14,7 @@ import (
 var Env string
 
 const (
-	appID string = "HuiCollect"
+	appID string = "btc-scan"
 )
 
 type Conf struct {
@@ -62,6 +62,7 @@ type ChainInfo struct {
 	ID      int    `mapstructure:"id"`
 	RpcUrl  string `mapstructure:"rpc_url"`
 	Timeout int    `mapstructure:"timeout"`
+	Delay   int    `mapstructure:"delay"`
 }
 
 func (c *Config) MustGetChainInfo(chain string) *ChainInfo {

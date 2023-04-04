@@ -11,10 +11,10 @@ import (
 	"net/http"
 	_ "net/http/pprof"
 
-	"github.com/ethereum/HuiCollect/config"
-	"github.com/ethereum/HuiCollect/db"
-	"github.com/ethereum/HuiCollect/log"
-	"github.com/ethereum/HuiCollect/services"
+	"github.com/btc-scan/config"
+	"github.com/btc-scan/db"
+	"github.com/btc-scan/log"
+	"github.com/btc-scan/services"
 	"github.com/sirupsen/logrus"
 )
 
@@ -54,7 +54,7 @@ func main() {
 
 	leaseAlive()
 	defer removeFile()
-	logrus.Info("Hui-Collect started")
+	logrus.Info("btc-scan started")
 
 	//listen kill signal
 	sigCh := make(chan os.Signal, 1)

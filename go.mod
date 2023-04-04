@@ -1,4 +1,4 @@
-module github.com/ethereum/HuiCollect
+module github.com/btc-scan
 
 go 1.19
 

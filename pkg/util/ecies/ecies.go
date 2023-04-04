@@ -37,7 +37,7 @@ import (
 	"crypto/subtle"
 	"encoding/binary"
 	"encoding/hex"
-	"github.com/ethereum/HuiCollect/pkg/util"
+	"github.com/btc-scan/pkg/util"
 	"hash"
 	"io"
 	"math/big"

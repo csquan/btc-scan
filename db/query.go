@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/ethereum/HuiCollect/types"
+	"github.com/btc-scan/types"
 )
 
 func (m *Mysql) GetOpenedCollectTask() ([]*types.CollectTxDB, error) {
@@ -92,4 +92,9 @@ func (m *Mysql) GetTokenInfo(contratAddr string, chain string) (*types.Token, er
 		return nil, nil
 	}
 	return token, nil
+}
+
+// 得到当前存储的任务高度
+func (m *Mysql) GetTaskHeight() (uint64, error) {
+	return 0, nil
 }

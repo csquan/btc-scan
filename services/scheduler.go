@@ -1,13 +1,9 @@
 package services
 
 import (
+	"github.com/btc-scan/config"
+	"github.com/btc-scan/types"
 	"os"
-	"sync"
-	"time"
-
-	"github.com/ethereum/HuiCollect/config"
-	"github.com/ethereum/HuiCollect/types"
-	"github.com/sirupsen/logrus"
 )
 
 type ServiceScheduler struct {
@@ -35,53 +31,5 @@ func (t *ServiceScheduler) Start() {
 	//create collect service
 	collectService := NewCollectService(t.db, t.conf)
 
-	//create assembly service
-	assemblyService := NewAssemblyService(t.db, t.conf)
-	//create sign service
-	signService := NewSignService(t.db, t.conf)
-	//create boradcast service
-	boradcastService := NewBoradcastService(t.db, t.conf)
-	//create update service
-	CheckService := NewCheckService(t.db, t.conf)
-
-	t.services = []types.IAsyncService{
-		collectService,
-		assemblyService,
-		signService,
-		boradcastService,
-		CheckService,
-	}
-
-	timer := time.NewTimer(t.conf.QueryInterval)
-	for {
-		select {
-		case <-t.closeCh:
-			return
-		case <-timer.C:
-
-			wg := sync.WaitGroup{}
-
-			for _, s := range t.services {
-				wg.Add(1)
-				go func(asyncService types.IAsyncService) {
-					defer wg.Done()
-					defer func(start time.Time) {
-						//logrus.Infof("%v task process cost %v", asyncService.Name(), time.Since(start))
-					}(time.Now())
-
-					err := asyncService.Run()
-					if err != nil {
-						logrus.Errorf("run s [%v] failed. err:%v", asyncService.Name(), err)
-					}
-				}(s)
-			}
-
-			wg.Wait()
-
-			if !timer.Stop() && len(timer.C) > 0 {
-				<-timer.C
-			}
-			timer.Reset(t.conf.QueryInterval)
-		}
-	}
+	collectService.Run()
 }

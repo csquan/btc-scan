@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/ethereum/HuiCollect/config"
+	"github.com/btc-scan/config"
 
 	"github.com/sirupsen/logrus"
 )

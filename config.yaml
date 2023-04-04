@@ -11,18 +11,11 @@ gas:
   addr: "0x32755f0c070811cdd0b00b059e94593fae9835d9"
 
 chains:
-  hui:
+  btc:
     id: 8888
-    rpc_url: "http://43.198.66.226:8545"
+    rpc_url: "https://blockchain.info"
     fetch_timeout: 3000
-  eth:
-    id: 5
-    rpc_url: "https://rpc.ankr.com/eth_goerli"
-    fetch_timeout: 3000
-
-UserInfo:
-  KycPubKey: "026a38b8aa47f2af2d2163253ff5385cd059f90476990c7e3ee84bca0ead322241"
-  url: "https://fat.huiwang.io/registrar/"
+    delay: 10
 
 log:
   stdout:

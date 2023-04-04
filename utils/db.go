@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/ethereum/HuiCollect/types"
+	"github.com/btc-scan/types"
 	"github.com/go-xorm/xorm"
 	"github.com/sirupsen/logrus"
 )
