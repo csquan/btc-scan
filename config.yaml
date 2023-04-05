@@ -1,21 +1,12 @@
 database:
-  db : "root:csquan253905@tcp(127.0.0.1:3306)/HuiCollect?charset=utf8mb4"
-
-monitor:
-  db : "root:csquan253905@tcp(127.0.0.1:3306)/block_data_test?charset=utf8mb4"
-
-collect:
-  addr: "0x32f3323a268155160546504c45d0c4a832567159"
-
-gas:
-  addr: "0x32755f0c070811cdd0b00b059e94593fae9835d9"
+  db : "root:csquan253905@tcp(127.0.0.1:3306)/btc_block_test?charset=utf8mb4"
 
 chains:
   btc:
     id: 8888
     rpc_url: "https://blockchain.info"
     fetch_timeout: 3000
-    delay: 10
+    delay: 1
 
 log:
   stdout:

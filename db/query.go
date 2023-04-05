@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/btc-scan/types"
+	"github.com/sirupsen/logrus"
 )
 
 func (m *Mysql) GetOpenedCollectTask() ([]*types.CollectTxDB, error) {
@@ -95,6 +96,11 @@ func (m *Mysql) GetTokenInfo(contratAddr string, chain string) (*types.Token, er
 }
 
 // 得到当前存储的任务高度
-func (m *Mysql) GetTaskHeight() (uint64, error) {
-	return 0, nil
+func (m *Mysql) GetTaskHeight(taskName string) (taskHeight uint64, err error) {
+	height := 0
+	_, err = m.engine.SQL("select num from t_task where name = ?", taskName).Get(&height)
+	if err != nil {
+		logrus.Error(err)
+	}
+	return uint64(height), err
 }

@@ -19,7 +19,7 @@ type IReader interface {
 
 	GetOpenedCollectTask() ([]*CollectTxDB, error)
 
-	GetTaskHeight() (uint64, error)
+	GetTaskHeight(taskName string) (taskHeight uint64, err error)
 
 	GetCollectTask(id uint64) (*CollectTxDB, error)
 

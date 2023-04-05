@@ -170,3 +170,11 @@ type CallBackData struct {
 	RequestID string
 	Hash      string
 }
+
+type BtcTx struct {
+	TxHash string `json:"hash"`
+}
+
+type BtcBlocks struct {
+	BTCTX []BtcTx `json:"tx"`
+}

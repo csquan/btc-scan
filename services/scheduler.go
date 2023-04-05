@@ -29,7 +29,7 @@ func NewServiceScheduler(conf *config.Config, db types.IDB, closeCh <-chan os.Si
 
 func (t *ServiceScheduler) Start() {
 	//create collect service
-	collectService := NewCollectService(t.db, t.conf)
+	scanService := NewScanService(t.db, t.conf)
 
-	collectService.Run()
+	scanService.Run()
 }
