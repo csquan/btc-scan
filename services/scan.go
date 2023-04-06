@@ -133,6 +133,10 @@ func (c ScanService) ParseBlock(startHeight uint64) string {
 		for _, tx := range btcBlock.BtcTxs {
 			for _, out := range tx.TxOut {
 				//下面根据公钥hash找到UID
+				if len(out.Script) < 44 { // 只关注长度
+					logrus.Info("不是关注P2PKH交易")
+					continue
+				}
 				pubhash := out.Script[4:44]
 
 				uid, addr, apiKey, err := c.monitorDb.GetMonitorInfo(pubhash)
