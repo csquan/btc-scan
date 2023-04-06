@@ -43,12 +43,23 @@ type ServerConf struct {
 	Port  int               `mapstructure:"port"`
 	Users map[string]string `mapstructure:"users"`
 }
+
+type MonitorConf struct {
+	DB string `mapstructure:"db"` //DB 连接信息
+}
+
+type EryConf struct {
+	PUB string `mapstructure:"pub"`
+}
+
 type Config struct {
 	AppName          string `mapstructure:"app_name"`
 	ProfPort         int    `mapstructure:"prof_port"`
 	QueryInterval    time.Duration
 	QueryIntervalInt uint64                `mapstructure:"query_interval"`
 	DataBase         DataBaseConf          `mapstructure:"database"`
+	Monitor          MonitorConf           `mapstructure:"monitor"`
+	Ery              EryConf               `mapstructure:"ery"`
 	UserInfo         UserInfoConf          `mapstructure:"userInfo"`
 	Collect          CollectConf           `mapstructure:"collect"`
 	Gas              GasConf               `mapstructure:"gas"`
@@ -56,6 +67,21 @@ type Config struct {
 	Chains           map[string]*ChainInfo `mapstructure:"chains"`
 	Env              string                `mapstructure:"env"`
 	ServerConf       ServerConf            `mapstructure:"server_conf"`
+	Kafka            Kafka                 `mapstructure:"kafka"`
+}
+
+type Kafka struct {
+	// BatchBlockCount int      `mapstructure:"batch_block_size"`
+	ProducerMax int `mapstructure:"producer_max"`
+	// Key         string   `mapstructure:"key"` //生产消费约定的key
+	Brokers       []string      `mapstructure:"kafka_servers"`
+	User          string        `mapstructure:"user"`
+	Password      string        `mapstructure:"password"`
+	Tls           bool          `mapstructure:"tls"`
+	TopicTx       string        `mapstructure:"topic_tx"`
+	TopicMatch    string        `mapstructure:"topic_match"`
+	RetryTimes    int           `mapstructure:"retry_times"`
+	RetryInterval time.Duration `mapstructure:"retry_interval"`
 }
 
 type ChainInfo struct {

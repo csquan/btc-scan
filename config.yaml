@@ -1,6 +1,12 @@
 database:
   db : "root:csquan253905@tcp(127.0.0.1:3306)/btc_block_test?charset=utf8mb4"
 
+monitor:
+  db: "root:csquan253905@tcp(127.0.0.1:3306)/HuiCollect?charset=utf8mb4"
+
+ery:
+  pub:  "03d26850e7f13c8092381f5a9497ad4be3907d5d12fd01a89c9c0533f46d829ec4"
+
 chains:
   btc:
     id: 8888
@@ -24,3 +30,14 @@ log:
       - "kafka-2.Hui.com:9092"
       - "kafka-3.Hui.com:9092"
     level: 3
+
+
+kafka:
+  batch_block_size: 5
+  producer_max: 5242880
+  topic_tx: tx-arrived2
+  topic_match: tx_matched0
+  retry_times: 5
+  retry_interval: 100
+  kafka_servers:
+    - "kafka.fat123.ml:9092"

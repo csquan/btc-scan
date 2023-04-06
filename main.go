@@ -66,8 +66,12 @@ func main() {
 		logrus.Fatalf("connect to dbConnection error:%v", err)
 	}
 
+	monitordbConnection, err := db.NewMonitorMysql(&conf.Monitor)
+	if err != nil {
+		logrus.Fatalf("connect to dbConnection error:%v", err)
+	}
 	//setup scheduler
-	scheduler, err := services.NewServiceScheduler(conf, dbConnection, sigCh)
+	scheduler, err := services.NewServiceScheduler(conf, dbConnection, monitordbConnection, sigCh)
 	if err != nil {
 		return
 	}

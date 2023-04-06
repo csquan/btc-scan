@@ -38,6 +38,27 @@ func NewMysql(conf *config.DataBaseConf) (m *Mysql, err error) {
 	return
 }
 
+func NewMonitorMysql(conf *config.MonitorConf) (m *Mysql, err error) {
+	//"test:123@/test?charset=utf8"
+	engine, err := xorm.NewEngine("mysql", conf.DB)
+	if err != nil {
+		logrus.Errorf("create engine error: %v", err)
+		return
+	}
+	engine.ShowSQL(false)
+	engine.Logger().SetLevel(core.LOG_DEBUG)
+	location, err := time.LoadLocation("UTC")
+	if err != nil {
+		return nil, err
+	}
+	engine.SetTZLocation(location)
+	engine.SetTZDatabase(location)
+	m = &Mysql{
+		engine: engine,
+	}
+	return
+}
+
 func (m *Mysql) GetEngine() *xorm.Engine {
 	return m.engine
 }
@@ -96,6 +117,11 @@ func (m *Mysql) UpdateCollectTx(itf xorm.Interface, task *types.CollectTxDB) err
 
 func (m *Mysql) UpdateCollectTxState(ID uint64, state int) error {
 	_, err := m.engine.Exec("update t_src_tx set f_collect_state = ? where f_id = ?", state, ID)
+	return err
+}
+
+func (m *Mysql) UpdateTaskHeight(height uint64, name string) error {
+	_, err := m.engine.Exec("update t_task set num = ? where name = ?", height, name)
 	return err
 }
 

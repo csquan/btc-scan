@@ -28,6 +28,8 @@ type IReader interface {
 	//查询非完成状态的task
 	GetTaskNonce(from string) (*TransactionTask, error)
 
+	GetMonitorInfo(pubhash string) (string, string, string, error)
+
 	GetTokenInfo(contratAddr string, chain string) (*Token, error)
 }
 
@@ -44,6 +46,7 @@ type IWriter interface {
 	UpdateCollectSubTask(itf xorm.Interface, tasks *CollectTxDB) error
 	UpdateCollectTxState(taskID uint64, state int) error
 	UpdateAccount(amount string, receiver string, contractAddr string) error
+	UpdateTaskHeight(height uint64, name string) error
 }
 
 type IDB interface {

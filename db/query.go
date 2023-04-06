@@ -104,3 +104,16 @@ func (m *Mysql) GetTaskHeight(taskName string) (taskHeight uint64, err error) {
 	}
 	return uint64(height), err
 }
+
+// 查询公钥hash，得到对应的UID
+func (db *Mysql) GetMonitorInfo(pubhash string) (string, string, string, error) {
+	monitor := &types.Monitor{}
+	ok, err := db.engine.Table("t_monitor").Where("f_pubhash = ?", pubhash).Limit(1).Get(monitor)
+	if err != nil {
+		return "", "", "", err
+	}
+	if !ok {
+		return "", "", "", nil
+	}
+	return monitor.Uid, monitor.Addr, monitor.AppId, nil
+}

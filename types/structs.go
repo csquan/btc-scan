@@ -171,10 +171,46 @@ type CallBackData struct {
 	Hash      string
 }
 
+type BtcOut struct {
+	Type    string `json:"type"`
+	Spent   string `json:"spent"`
+	Value   string `json:"value"`
+	TxIndex string `json:"tx_index"`
+	Script  string `json:"script"`
+	Addr    string `json:"addr"`
+}
+
 type BtcTx struct {
-	TxHash string `json:"hash"`
+	TxHash string   `json:"hash"`
+	TxOut  []BtcOut `json:"out"`
 }
 
 type BtcBlocks struct {
-	BTCTX []BtcTx `json:"tx"`
+	BtcTxs []BtcTx `json:"tx"`
+}
+
+type Monitor struct {
+	*Base   `xorm:"extends"`
+	Addr    string `xorm:"f_addr"`
+	Chain   string `xorm:"f_chain"`
+	Uid     string `xorm:"f_uid"`
+	AppId   string `xorm:"f_appid"`
+	PubHash string `xorm:"f_pubhash"`
+}
+
+type TxKakfa struct {
+	From           string `json:"from"`
+	To             string `json:"to"`
+	UID            string `json:"uid"`
+	ApiKey         string `json:"api_key"`
+	Amount         string `json:"amount"`
+	TokenType      uint8  `json:"token_type" //1-非ERC20 2-ERC20 `
+	TxHash         string `json:"tx_hash"`
+	Chain          string `json:"chain"`
+	ContractAddr   string `json:"contract_addr"`
+	Decimals       uint8  `json:"decimals"`
+	AssetSymbol    string `json:"asset_symbol"`
+	TxHeight       uint64 `json:"tx_height"`
+	CurChainHeight uint64 `json:"cur_chain_height"`
+	LogIndex       uint8  `json:"log_index"`
 }
