@@ -125,16 +125,13 @@ func (c ScanService) ParseBlock(startHeight uint64) string {
 		logrus.Error(err)
 	}
 	blocks := gjson.Get(block, "blocks")
-	logrus.Info(blocks)
 	ret := make([]*types.BtcBlocks, 0)
 	bb := []byte(blocks.String())
 	json.Unmarshal(bb, &ret)
 
 	for _, btcBlock := range ret { //P2PKH 每个tx中的锁定脚本中格式 OP_DUP OP_HASH160 <Public Key Hash> OP_EQUALVERIFY OP_CHECKSIG
 		for _, tx := range btcBlock.BtcTxs {
-			logrus.Info(tx.TxHash)
 			for _, out := range tx.TxOut {
-				logrus.Info(out.Script[4:44])
 				//下面根据公钥hash找到UID
 				pubhash := out.Script[4:44]
 
@@ -145,7 +142,6 @@ func (c ScanService) ParseBlock(startHeight uint64) string {
 
 				if len(uid) > 0 {
 					logrus.Info("get kafka data ++")
-
 					//对于优化后的归集，这里仅仅是一个归集通知
 					txKakfa := &types.TxKakfa{
 						From:           addr,

@@ -19,18 +19,15 @@ import (
 )
 
 var (
-	confFile string
+	confDir string
 )
 
-func init() {
-	flag.StringVar(&confFile, "conf", "config.yaml", "conf file")
-	flag.StringVar(&config.Env, "env", "dev", "env")
-}
-
 func main() {
+	flag.StringVar(&confDir, "conf", "./conf", "conf file")
 	flag.Parse()
-	logrus.Info(confFile)
+	logrus.Info(confDir)
 
+	confFile := confDir + "/config.yaml"
 	conf, err := config.LoadConf(confFile)
 	if err != nil {
 		logrus.Errorf("load config error:%v", err)

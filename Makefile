@@ -2,8 +2,8 @@ all: build
 
 CURRENT_DIR=$(pwd)
 
-PROJ = hui-collect
-MODULE = "hui-collect"
+PROJ = btc-sync
+MODULE = "btc-sync"
 
 PKG = `go list ./... | grep -v /vendor/`
 
@@ -37,7 +37,7 @@ test: style cilint
 	go test -cover ./...
 
 server: clean 
-	${CROSS_COMPILE} go build -o bin/linux-amd64-hui-collect ${PKG_TAG} main.go
+	${CROSS_COMPILE} go build -o bin/linux-amd64-btc-sync ${PKG_TAG} main.go
 
 
 .PHONY: build clean client
