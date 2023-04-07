@@ -137,8 +137,8 @@ func (c ScanService) ParseBlock(startHeight uint64) error {
 	}
 
 	for _, btcBlock := range ret { //P2PKH 每个tx中的锁定脚本中格式 OP_DUP OP_HASH160 <Public Key Hash> OP_EQUALVERIFY OP_CHECKSIG
+		logrus.Info("当前交易条数：", len(btcBlock.BtcTxs))
 		for _, tx := range btcBlock.BtcTxs {
-			logrus.Info("当前交易条数：", len(btcBlock.BtcTxs))
 			outLen := len(tx.TxOut)
 			count := 0
 			for _, out := range tx.TxOut {
