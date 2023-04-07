@@ -111,7 +111,6 @@ func (c *ScanService) Run() (err error) {
 
 	startHeight := uint64(c.config.Chains["btc"].Delay) + taskHeight
 
-	//这里其实有个bug：chainHeight一直没有更新，应该这么做：当startHeight==chainHeight的时候，直接获取最新的高度，直到高度大，才
 	for true {
 		if uint64(startHeight) <= chainHeight {
 			c.ParseBlock(startHeight)
@@ -119,7 +118,7 @@ func (c *ScanService) Run() (err error) {
 			c.db.UpdateTaskHeight(startHeight, "BTC")
 			startHeight = startHeight + 1
 		} else {
-			time.Sleep(5 * time.Minute)
+			time.Sleep(5 * time.Minute) //比特币平均出块10分钟
 		}
 
 		chainHeight, err = c.GetLastBlockHeight()
