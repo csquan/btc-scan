@@ -84,7 +84,7 @@ func (c *ScanService) GetLastBlockHeight() (height uint64, err error) {
 	if err != nil {
 		logrus.Error(err)
 	}
-	height1 := gjson.Get(res, "block_index")
+	height1 := gjson.Get(res, "height")
 	return height1.Uint(), nil
 }
 
@@ -110,12 +110,24 @@ func (c *ScanService) Run() (err error) {
 	}
 
 	startHeight := uint64(c.config.Chains["btc"].Delay) + taskHeight
-	for uint64(startHeight) <= chainHeight {
-		c.ParseBlock(startHeight)
-		//更新数据库高度
-		c.db.UpdateTaskHeight(startHeight, "BTC")
-		startHeight = startHeight + 1
+
+	//这里其实有个bug：chainHeight一直没有更新，应该这么做：当startHeight==chainHeight的时候，直接获取最新的高度，直到高度大，才
+	for true {
+		if uint64(startHeight) <= chainHeight {
+			c.ParseBlock(startHeight)
+			//更新数据库高度
+			c.db.UpdateTaskHeight(startHeight, "BTC")
+			startHeight = startHeight + 1
+		} else {
+			time.Sleep(5 * time.Minute)
+		}
+
+		chainHeight, err = c.GetLastBlockHeight()
+		if err != nil {
+			return
+		}
 	}
+
 	return
 }
 
