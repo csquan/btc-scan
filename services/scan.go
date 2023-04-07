@@ -138,9 +138,9 @@ func (c ScanService) ParseBlock(startHeight uint64) error {
 
 	for _, btcBlock := range ret { //P2PKH 每个tx中的锁定脚本中格式 OP_DUP OP_HASH160 <Public Key Hash> OP_EQUALVERIFY OP_CHECKSIG
 		for _, tx := range btcBlock.BtcTxs {
-			logrus.Info("当前交易条数：", len(btcBlock.BtcTxs)
+			logrus.Info("当前交易条数：", len(btcBlock.BtcTxs))
 			outLen := len(tx.TxOut)
-			count :=0
+			count := 0
 			for _, out := range tx.TxOut {
 				count = count + 1
 				//下面根据公钥hash找到UID
@@ -165,6 +165,7 @@ func (c ScanService) ParseBlock(startHeight uint64) error {
 
 				if len(uid) > 0 {
 					logrus.Info("get kafka data ++")
+					logrus.Info("找到uid,当前out索引为:", count, " 每条交易的out条数:", outLen)
 					//对于优化后的归集，这里仅仅是一个归集通知
 					txKakfa := &types.TxKakfa{
 						From:           addr,
@@ -192,7 +193,7 @@ func (c ScanService) ParseBlock(startHeight uint64) error {
 					}
 					logrus.Info("push kafka success ++")
 				} else {
-					logrus.Info("找不到uid,当前out索引为:",count," 每条交易的out条数:", outLen)
+					logrus.Info("找不到uid,当前out索引为:", count, " 每条交易的out条数:", outLen)
 				}
 			}
 		}
