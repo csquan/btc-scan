@@ -119,7 +119,7 @@ func (c *ScanService) Run() (err error) {
 	return
 }
 
-func (c ScanService) ParseBlock(startHeight uint64) string {
+func (c ScanService) ParseBlock(startHeight uint64) error {
 	block, err := c.getBlock(startHeight)
 	if err != nil {
 		logrus.Error(err)
@@ -129,19 +129,38 @@ func (c ScanService) ParseBlock(startHeight uint64) string {
 	bb := []byte(blocks.String())
 	json.Unmarshal(bb, &ret)
 
+	//优化：这里每个区块取一次db，将btc的都取出，下面直接匹配
+	monitors, err := c.monitorDb.GetChainMonitor("btc")
+	if err != nil {
+		logrus.Error(err)
+		return err
+	}
+
 	for _, btcBlock := range ret { //P2PKH 每个tx中的锁定脚本中格式 OP_DUP OP_HASH160 <Public Key Hash> OP_EQUALVERIFY OP_CHECKSIG
 		for _, tx := range btcBlock.BtcTxs {
+			logrus.Info("当前交易条数：", len(btcBlock.BtcTxs)
+			outLen := len(tx.TxOut)
+			count :=0
 			for _, out := range tx.TxOut {
+				count = count + 1
 				//下面根据公钥hash找到UID
 				if len(out.Script) < 44 { // 只关注长度
-					logrus.Info("不是关注P2PKH交易")
+					logrus.Info("不是关注的P2PKH交易")
 					continue
 				}
 				pubhash := out.Script[4:44]
 
-				uid, addr, apiKey, err := c.monitorDb.GetMonitorInfo(pubhash)
-				if err != nil {
-					logrus.Error(err)
+				uid := ""
+				addr := ""
+				apiKey := ""
+
+				for _, monitor := range monitors {
+					if monitor.PubHash == pubhash {
+						logrus.Info("匹配到地址公钥")
+						uid = monitor.Uid
+						addr = monitor.Addr
+						apiKey = monitor.AppId
+					}
 				}
 
 				if len(uid) > 0 {
@@ -173,13 +192,13 @@ func (c ScanService) ParseBlock(startHeight uint64) string {
 					}
 					logrus.Info("push kafka success ++")
 				} else {
-					logrus.Info("can not found uid+++")
+					logrus.Info("找不到uid,当前out索引为:",count," 每条交易的out条数:", outLen)
 				}
 			}
 		}
 	}
 
-	return "btc-scan"
+	return nil
 }
 
 func (c *ScanService) PushKafka(bb []byte, topic string) error {

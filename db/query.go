@@ -117,3 +117,13 @@ func (db *Mysql) GetMonitorInfo(pubhash string) (string, string, string, error) 
 	}
 	return monitor.Uid, monitor.Addr, monitor.AppId, nil
 }
+
+// 查询btc，得到所有结果
+func (db *Mysql) GetChainMonitor(name string) ([]*types.Monitor, error) {
+	monitors := make([]*types.Monitor, 0)
+	err := db.engine.Table("t_monitor").Where("f_chain = ?", name).Find(&monitors)
+	if err != nil {
+		return nil, err
+	}
+	return monitors, err
+}

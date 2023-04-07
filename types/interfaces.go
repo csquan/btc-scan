@@ -31,6 +31,8 @@ type IReader interface {
 	GetMonitorInfo(pubhash string) (string, string, string, error)
 
 	GetTokenInfo(contratAddr string, chain string) (*Token, error)
+
+	GetChainMonitor(name string) ([]*Monitor, error)
 }
 
 type IWriter interface {
