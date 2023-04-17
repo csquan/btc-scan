@@ -118,6 +118,7 @@ func (c *ScanService) Run() (err error) {
 			c.db.UpdateTaskHeight(startHeight, "BTC")
 			startHeight = startHeight + 1
 		} else {
+			logrus.Info("开始休眠5分钟")
 			time.Sleep(5 * time.Minute) //比特币平均出块10分钟
 		}
 
